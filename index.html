@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes HTTP.</title>
+</head>
+
+<body>
+
+    <section>
+        <h2>Solicitud GET / TRAER USUARIOS:</h2>
+        <form id="formConsultaUsuarios">
+            <input type="submit" value="Consultar usuarios">
+        </form>
+    </section>
+    <section>
+        <h2>Solicitud GET / TRAER USUARIO POR ID:</h2>
+        <form id="formConsultaUsuarioPorId">
+            <label for="">Ingrese el id del usuario:</label>
+            <input type="text" id="searchUserId" required>
+            <input type="submit" value="Consultar usuario por ID">
+        </form>
+    </section>
+
+    <section>
+        <h2>Solicitud POST / CREAR NUEVO USUARIO:</h2>
+        <form id="formCrearUsuario">
+            <label for="">Ingrese nombre de usuario:</label>
+            <input type="text" id="createName" required>
+            <label for="">Ingrese email del usuario:</label>
+            <input type="email" id="createEmail" required>
+            <input type="submit" value="Crear usuario">
+        </form>
+    </section>
+
+    <section>
+        <h2>Solicitud PUT / ACTUALIZAR USUARIO:</h2>
+        <form id="formUpdateUsuario">
+            <select name="" id="selectUsuariosUpdate">
+
+            </select>
+            <label for="">Nuevo Nombre:</label>
+            <input type="text" id="updateName" required>
+            <label for="">Nuevo Email:</label>
+            <input type="email" id="updateEmail" required>
+            <input type="submit" value="Crear usuario">
+        </form>
+    </section>
+
+    <section>
+        <h2>Solicitud DELETE / ELIMINAR USUARIO:</h2>
+        <form id="formDeleteUsuario">
+            <select name="" id="selectUsuariosDelete">
+
+            </select>
+            <input type="submit" value="Eliminar usuario">
+        </form>
+    </section>
+
+
+    <script>
+
+        const main = () => {
+            fetch("http://localhost:3000/usuarios")
+                .then(response => response.json())
+                .then(data => {
+                    let acumuladorOpciones = "";
+                    data.usuarios.forEach(usuario => {
+                        acumuladorOpciones += `<option value="${usuario.id}">${usuario.nombre}</option>`
+                    })
+                    selectUsuariosUpdate.innerHTML = acumuladorOpciones;
+                    selectUsuariosDelete.innerHTML = acumuladorOpciones;
+                })
+        }
+
+        main();
+
+        formConsultaUsuarios.addEventListener("submit", (event) => {
+            event.preventDefault();
+            fetch("http://localhost:3000/usuarios")
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                })
+        })
+
+
+        formConsultaUsuarioPorId.addEventListener("submit", (event) => {
+            event.preventDefault();
+            fetch("http://localhost:3000/usuarios/" + searchUserId.value)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                })
+        })
+
+
+        formCrearUsuario.addEventListener("submit", (event) => {
+            event.preventDefault();
+            fetch("http://localhost:3000/usuarios/", {
+                method: "post",
+                body: JSON.stringify({
+                    nombre: createName.value,
+                    email: createEmail.value
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    main();
+                })
+        })
+
+        formUpdateUsuario.addEventListener("submit", (event) => {
+            event.preventDefault();
+            fetch("http://localhost:3000/usuarios/", {
+                method: "put",
+                body: JSON.stringify({
+                    id: selectUsuariosUpdate.value,
+                    nombre: updateName.value,
+                    email: updateEmail.value
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    main();
+                })
+        })
+
+        formDeleteUsuario.addEventListener("submit", (event) => {
+            event.preventDefault();
+            fetch("http://localhost:3000/usuarios/" + selectUsuariosDelete.value, {
+                method: "delete",
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    main();
+                })
+        })
+    </script>
+
+</body>
+
+</html>
