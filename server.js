@@ -19,6 +19,10 @@ app.listen(3000, () =>
     console.log("Servidor escuchando en http://localhost:3000")
 );
 
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/index.html");
+});
+
 app.get("/usuarios", (req, res) => {
     res.status(200).send({ status: 200, usuarios });
 });
