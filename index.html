@@ -64,7 +64,7 @@
     <script>
 
         const main = () => {
-            fetch("https://thankful-teal-cow.cyclic.app/usuarios")
+            fetch("/usuarios")
                 .then(response => response.json())
                 .then(data => {
                     let acumuladorOpciones = "";
@@ -80,7 +80,7 @@
 
         formConsultaUsuarios.addEventListener("submit", (event) => {
             event.preventDefault();
-            fetch("https://thankful-teal-cow.cyclic.app/usuarios")
+            fetch("/usuarios")
                 .then(response => response.json())
                 .then(data => {
                     console.log(data)
@@ -90,7 +90,7 @@
 
         formConsultaUsuarioPorId.addEventListener("submit", (event) => {
             event.preventDefault();
-            fetch("https://thankful-teal-cow.cyclic.app/usuarios/" + searchUserId.value)
+            fetch("/usuarios/" + searchUserId.value)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data)
@@ -100,7 +100,7 @@
 
         formCrearUsuario.addEventListener("submit", (event) => {
             event.preventDefault();
-            fetch("https://thankful-teal-cow.cyclic.app/usuarios/", {
+            fetch("/usuarios/", {
                 method: "post",
                 body: JSON.stringify({
                     nombre: createName.value,
@@ -119,7 +119,7 @@
 
         formUpdateUsuario.addEventListener("submit", (event) => {
             event.preventDefault();
-            fetch("https://thankful-teal-cow.cyclic.app/usuarios/", {
+            fetch("p/usuarios/", {
                 method: "put",
                 body: JSON.stringify({
                     id: selectUsuariosUpdate.value,
@@ -139,7 +139,7 @@
 
         formDeleteUsuario.addEventListener("submit", (event) => {
             event.preventDefault();
-            fetch("https://thankful-teal-cow.cyclic.app/usuarios/" + selectUsuariosDelete.value, {
+            fetch("/usuarios/" + selectUsuariosDelete.value, {
                 method: "delete",
             })
                 .then(response => response.json())
